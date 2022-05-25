@@ -1,5 +1,8 @@
-var formEl = $('.time-block');
-console.log(formEl);
+let formEl = $('.time-block');
+
+let formEnd = $('.time-block').attr("data-endTime")
+let saveButton = $('.saveBtn');
+let rootEl = $('#root')
 
 // array which consists of 9 elements for the time blocks
 let schedule = ["","","","","","","","",""];
@@ -8,42 +11,56 @@ let schedule = ["","","","","","","","",""];
 var today  = moment().format("dddd, MMMM D, YYYY");
 $("#currentDay").text(today);
 
+init();
+
 function init() {
-    schedule = JSON.parse(localStorage.getItem("schedule"));
-}
-
-for (let i = 0; i< formEl.length; i++) {
+    //schedule = JSON.parse(localStorage.getItem("schedule"));
+    setColours();
 
 }
+
+function setColours() {
 
 // if statement to determine if block of time is now, earlier, or later
-
 for (let i = 0; i<schedule.length; i++) {
 
-if (moment()> formEl[i].moment(data-endTime, "HH:mm")) {
-    formEl[i].addClass("future")
-    formEl[i].removeClass("present")
-    formEl[i].removeClass("past")
+    let dataStart = formEl.eq(i).attr('data-startTime');
+    let dataEnd = formEl.eq(i).attr('data-endTime');
+
+    let startTime = moment(dataStart, "HH:mm");
+    let endTime = moment(dataEnd, "HH:mm");
+
+    let now = moment();
+
+if (now< startTime) {
+    formEl.eq(i).addClass('future');
+    formEl.eq(i).removeClass('present');
+    formEl.eq(i).removeClass('past');
 }
-else if (moment() < formEl[i].moment(data-startTime, "HH:mm")) {
-    formEl[i].addClass("past")
-    formEl[i].removeClass("present")
-    formEl[i].removeClass("future")
+else if (now > endTime) {
+    formEl.eq(i).addClass("past");
+    formEl.eq(i).removeClass("present");
+    formEl.eq(i).removeClass("future");
 }
 else {
-    formEl[i].addClass("present")
-    formEl[i].removeClass("future")
+    formEl.eq(i).addClass("present");
+    formEl.eq(i).removeClass("future");
+}
 }
 }
 
-//reload on page load and prevent default
+
 
 //save data to local storage
 
 //click save button at index i causes input form i's value to be saved in array at index i
-saveBtn.on('click', function () {
-    event.preventDefault();
-    schedule[i] = formEl[i].val();
+for (let i = 0; i < schedule.length; i++)
+{
+    saveButton.eq(i).onclick = saveData(i)
+}
+
+function saveData(i) {
+    schedule[i] = formEl.eq(i).text;
     localStorage.setItem("schedule", JSON.stringify(schedule));
 
-  });
+  };
