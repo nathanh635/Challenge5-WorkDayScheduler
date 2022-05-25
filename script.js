@@ -54,13 +54,9 @@ else {
 //save data to local storage
 
 //click save button at index i causes input form i's value to be saved in array at index i
-for (let i = 0; i < schedule.length; i++)
-{
-    saveButton.eq(i).onclick = saveData(i)
-}
 
-function saveData(i) {
-    schedule[i] = formEl.eq(i).text;
+    saveButton.eq(i).on('click', function () {
+    schedule[i] = formEl.eq(i).val();
     localStorage.setItem("schedule", JSON.stringify(schedule));
 
-  };
+  });
