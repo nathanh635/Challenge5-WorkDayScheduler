@@ -1,8 +1,7 @@
 let formEl = $('.time-block');
-
-let formEnd = $('.time-block').attr("data-endTime")
 let saveButton = $('.saveBtn');
 let rootEl = $('#root')
+let button =  $('#save');
 
 // array which consists of 9 elements for the time blocks
 let schedule = ["","","","","","","","",""];
@@ -13,8 +12,14 @@ $("#currentDay").text(today);
 
 init();
 
+
+
 function init() {
-    //schedule = JSON.parse(localStorage.getItem("schedule"));
+    schedule = JSON.parse(localStorage.getItem("schedule"));
+    for (let i=0; i<9; i++) {
+        localStorage.setItem("schedule", JSON.stringify(schedule));
+         formEl.eq(i).val(schedule[i])
+      }
     setColours();
 
 }
@@ -49,14 +54,10 @@ else {
 }
 }
 
-
-
 //save data to local storage
-
-//click save button at index i causes input form i's value to be saved in array at index i
-
-    saveButton.eq(i).on('click', function () {
-    schedule[i] = formEl.eq(i).val();
+$(".saveBtn").on('click',function() {
+    var t = (this.id);
+    schedule[t] = formEl.eq(t).val();
     localStorage.setItem("schedule", JSON.stringify(schedule));
-
-  });
+    console.log(schedule);
+});    
