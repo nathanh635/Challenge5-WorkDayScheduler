@@ -18,10 +18,15 @@ function init() {
     //load schedule data from local storage
     schedule = JSON.parse(localStorage.getItem("schedule"));
     //populate time blocks 
+    if (schedule !== null) {
     for (let i=0; i<9; i++) {
         localStorage.setItem("schedule", JSON.stringify(schedule));
          formEl.eq(i).val(schedule[i])
       }
+    } else {
+        schedule = ["","","","","","","","",""];
+    }
+
     setColours();
 
 }
