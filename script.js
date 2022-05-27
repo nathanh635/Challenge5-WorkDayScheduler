@@ -2,6 +2,7 @@ let formEl = $('.time-block');
 let saveButton = $('.saveBtn');
 let rootEl = $('#root')
 let button =  $('#save');
+let clearButton =$('#clear')
 
 // array which consists of 9 elements for the time blocks
 let schedule = ["","","","","","","","",""];
@@ -10,12 +11,13 @@ let schedule = ["","","","","","","","",""];
 var today  = moment().format("dddd, MMMM D, YYYY");
 $("#currentDay").text(today);
 
+//call init function on page load
 init();
 
-
-
 function init() {
+    //load schedule data from local storage
     schedule = JSON.parse(localStorage.getItem("schedule"));
+    //populate time blocks 
     for (let i=0; i<9; i++) {
         localStorage.setItem("schedule", JSON.stringify(schedule));
          formEl.eq(i).val(schedule[i])
@@ -26,7 +28,7 @@ function init() {
 
 function setColours() {
 
-// if statement to determine if block of time is now, earlier, or later
+    // if statement to determine if block of time is now, earlier, or later
 for (let i = 0; i<schedule.length; i++) {
 
     let dataStart = formEl.eq(i).attr('data-startTime');
@@ -36,6 +38,8 @@ for (let i = 0; i<schedule.length; i++) {
     let endTime = moment(dataEnd, "HH:mm");
 
     let now = moment();
+
+    //assign colour classes based on time comparison
 
 if (now< startTime) {
     formEl.eq(i).addClass('future');
@@ -54,10 +58,21 @@ else {
 }
 }
 
-//save data to local storage
+//save data to local storage on button click
 $(".saveBtn").on('click',function() {
     var t = (this.id);
     schedule[t] = formEl.eq(t).val();
     localStorage.setItem("schedule", JSON.stringify(schedule));
-    console.log(schedule);
+});    
+
+//clear all data
+clearButton.on('click',function() {
+  let empty = confirm("Are you sure you would like to clear all data?")
+  if (empty = true) {
+    for (let i=0; i<9; i++) {
+        schedule[i]=""
+         formEl.eq(i).val(schedule[i])
+      }
+      localStorage.setItem("schedule", JSON.stringify(schedule));
+    }
 });    
