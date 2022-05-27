@@ -20,7 +20,6 @@ function init() {
     //populate time blocks 
     if (schedule !== null) {
     for (let i=0; i<9; i++) {
-        localStorage.setItem("schedule", JSON.stringify(schedule));
          formEl.eq(i).val(schedule[i])
       }
     } else {
